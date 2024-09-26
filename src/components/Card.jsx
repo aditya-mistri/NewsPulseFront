@@ -1,14 +1,22 @@
 import React from "react";
-
+import fallbackImage from "../../assets/fallback.png"; // Correct path for the fallback image
 
 function Card(props) {
-  const fallbackImageUrl = "../../assets/fallback-image.png";
+  const handleImageError = (event) => {
+    event.target.src = fallbackImage; // Assign fallback image when error occurs
+  };
+
   return (
     <div className="everything-card mt-10">
       <div className="everything-card flex flex-wrap p-5 gap-1 mb-1">
         <b className="title">{props.title}</b>
         <div className="everything-card-img mx-auto">
-          <img className="everything-card-img" src={props.imgUrl || fallbackImageUrl} alt="No Image" />
+          <img
+            className="everything-card-img"
+            src={props.imgUrl || fallbackImage}
+            alt="No Image"
+            onError={handleImageError} // Fallback logic if image fails to load
+          />
         </div>
         <div className="description">
           <p className="description-text leading-7">
@@ -22,28 +30,27 @@ function Card(props) {
               href={props.url}
               target="_blank"
               className="link underline break-words"
+              rel="noopener noreferrer"
             >
-              {props.source.substring(0, 70)}
+              {props.source?.substring(0, 70)}
             </a>
           </div>
           <div className="origin flex flex-col">
             <p className="origin-item">
-              <span className="font-semibold">Author:</span>
-              {props.author}
+              <span className="font-semibold">Author:</span> {props.author}
             </p>
             <p className="origin-item">
-              <span className="font-semibold">Published At:</span>
-              ({props.publishedAt})
+              <span className="font-semibold">Published At:</span> ({props.publishedAt})
             </p>
           </div>
         </div>
       </div>
 
-      {/* Added the new card content with styles */}
+      {/* New card content */}
       <div className="flex lg:flex-row">
         <div
           className="h-48 lg:h-auto lg:w-48 flex-none bg-cover rounded-t lg:rounded-t-none lg:rounded-l text-center overflow-hidden"
-          style={{ backgroundImage: `url(${props.imageUrlLeft})` }}
+          style={{ backgroundImage: `url(${props.imageUrlLeft || fallbackImage})` }} // Fallback for background image
           title={props.imageLeftTitle}
         ></div>
         <div className="border rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal">
@@ -71,6 +78,7 @@ function Card(props) {
                 className="w-10 h-10 rounded-full mr-4"
                 src={props.authorImage}
                 alt="Avatar"
+                onError={handleImageError} // Fallback for author image
               />
             )}
             <div className="text-sm">
