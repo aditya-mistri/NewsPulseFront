@@ -85,4 +85,4 @@ function TopHeadlines() {
   );
 }
 
-export default TopHeadlines; 
+export default TopHeadlines;
